@@ -1,0 +1,28 @@
+Passing `generation_config` together with generation-related arguments=({'max_new_tokens'}) is deprecated and will be removed in future versions. Please pass either a `generation_config` object OR all generation parameters explicitly, but not both.
+Both `max_new_tokens` (=512) and `max_length`(=20) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+**Boost Your Energy with our Premium Protein Drink – Fuel Your Fitness Journey**  
+
+Stay ahead with **Protein Power**, the ultimate dietary supplement designed to fuel your workouts and support your health goals. Whether you're a fitness enthusiast, an athlete, or simply looking to maintain a balanced lifestyle, our protein drink offers a powerful blend of essential amino acids, complete proteins, and essential nutrients to keep you energized and performing at your best.  
+
+**Why Choose Protein Power?**  
+- **High-Quality Protein**: Each serving contains [X] grams of complete protein, derived from premium sources like whey, plant-based proteins, and collagen, ensuring optimal muscle recovery and growth.  
+- **Natural Flavors & Ingredients**: Enjoy a range of delicious flavors like Vanilla Bean, Chocolate Fudge, and Berry Blast, made with natural sweeteners instead of artificial additives.  
+- **Quick Absorption & Recovery**: Whether you're pre-training, post-workout, or just need a pick-me-up, our drink digests quickly to provide sustained energy and support your body’s needs.  
+- **Gluten-Free & Vegan Option**: Suitable for those with dietary restrictions, our formula is free from gluten, dairy, and animal products, catering to a variety of lifestyles.  
+- **Hydration Support**: Packed with vitamins and minerals like Vitamin B6, Vitamin B12, and Iron, our drink promotes overall health and well-being while keeping you hydrated.  
+
+**Perfect for:**  
+- Athletes and fitness enthusiasts looking to enhance performance and recovery.  
+- Individuals following a plant-based diet or looking for a gluten-free option.  
+- Anyone seeking a convenient way to meet their daily protein needs.  
+
+**How to Use:**  
+Mix one serving (30g) of our protein powder with 250ml of water or your favorite beverage for a quick and easy post-workout boost, or enjoy it on its own as a nutritious snack.  
+
+**Order Now and Fuel Your Potential!**  
+Take the first step toward achieving your fitness goals with **Protein Power**. With its unmatched quality, versatility, and health benefits, it’s the perfect addition to your daily routine.  
+
+*Available in: Vanilla Bean, Chocolate Fudge, Berry Blast*  
+**Protein Power – Where Fitness Meets Nutrition.**  
+
+*(Note: Always consult with a healthcare professional before starting any new supplement regimen.)*
