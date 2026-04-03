@@ -174,7 +174,6 @@ class GutenbergTextLoadError(Exception):
     """Exception raised for errors in loading Gutenberg text files."""
     pass
 class DocumentSource(ABC):
-    @classmethod
     @abstractmethod
     def load_from_url(self, url) -> Document:
         pass
@@ -192,4 +191,126 @@ class GutenbergSource(DocumentSource):
 
     def __init__(self, cache_dir:str = "./.cache"):
         self.cache_manager = CacheManager(cache_dir)
+    def _fetch_text_from_url(self, url: str) -> str:
+        """
+        Fetch text content from a URL with caching
+
+        Args:
+          url (str): URL to fetch text from
+        Returns:
+          str: Text content from the URL
+        Raises:
+          GutenbergTextLoadError: If there's an error fetching or processing the URL
+        """
+        if self.cache_manager.is_cached(url):
+            logger.info(f"Loading {url} from cache")
+            cache_content = self.cache_manager.get_cached_context(url)
+            if cache_content:
+                return cache_content
+            logger.warning(f"Cached content for {url} could not be read, downloading again")
+        
+        try:
+            logger.info(f"Fetching text from URL: {url}")
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+
+            content_type = response.headers.get('Content-Type')
+            if 'text/plain' not in content_type and 'text/html' not in content_type:
+                raise GutenbergTextLoadError(f"Url does not contain text content: {content_type}")
+            
+            encoding = response.encoding or "utf-8"
+            content = response.content.decode(encoding)
+
+            self.cache_manager.cache_content(url, content)
+
+            return content
+        except requests.RequestException as re:
+            raise GutenbergTextLoadError(f"Error fetching URL: {url}: {str(re)}")
+        except UnicodeDecodeError as ude:
+            raise GutenbergTextLoadError(f"Error decoding content from {url}: {str(ude)}")
+        
+    def _cleaning_gutenberg_text(self, text: str) -> str:
+        """
+        Clean Project Gutenberg text by removing headers, footers, and license information
+        Args:
+          text (str): Raw text from Project Gutenberg
+        Returns:
+          str: Cleaned text with Gutenberg-specific content removed
+        """
+
+        start_markers = [
+            r"\*\*\* START OF (THIS|THE) PROJECT GUTENBERG EBOOK .+? \*\*\*",
+            r"\*\*\* START OF THE PROJECT GUTENBERG .+? \*\*\*",
+            r"\*\*\*START OF THE PROJECT GUTENBERG EBOOK .+? \*\*\*",
+            r"START OF (THE|THIS) PROJECT GUTENBERG EBOOK"
+        ]
+
+        end_markers = [
+            r"\*\*\* END OF (THIS|THE) PROJECT GUTENBERG EBOOK .+? \*\*\*",
+            r"\*\*\* END OF THE PROJECT GUTENBERG .+? \*\*\*",
+            r"\*\*\*END OF THE PROJECT GUTENBERG EBOOK .+? \*\*\*",
+            r"END OF (THE|THIS) PROJECT GUTENBERG EBOOK"
+        ]
+
+        start_pos = 0
+
+        for marker in start_markers:
+            match = re.search(marker, text, re.IGNORECASE)
+            if match:
+                start_pos = match.end()
+                break
+        
+        end_pos = 0
+        for marker in end_markers:
+            match = re.search(marker, text, re.IGNORECASE)
+            if match:
+                end_pos = match.start()
+                break
+        
+        content = text[start_pos:end_pos].strip()
+
+        content = re.sub(r'\n{3,}', '\n\n', content)
+        logger.info(f"Cleaned Gutenberg text: removed {start_pos} chars from start, "
+                    f"{len(text) -end_pos} chars from end")
+        return content
+    
+    def load_from_url(self, url:str) -> Document:
+        """
+        Load text frm a URL and return a LlamaIndex Document
+        
+        Args: 
+          ur(str, optional) - URL to load text frm. If None, uses default URL.
+        Returns:
+          Document
+        Raises:
+          GutenbergTextLoadError: If there's an error loading or processing the text.
+        """
+
+        url = url or self.default_url
+
+        try:
+            raw_text = self._fetch_text_from_url(url)
+            cleaned_text = self._cleaning_gutenberg_text(raw_text)
+
+            parsed_url = urlparse(url)
+            file_name = os.path.basename(parsed_url.path)
+
+            document = Document(
+                text = cleaned_text,
+                metadata = {
+                    "source": url,
+                    "filename": file_name,
+                    "date_loaded": time.strftime("%Y-%m-%d %H:%M:%S")
+                }
+            )
+
+            logger.info(f"Successfully loaded text from {url}.")
+
+            return document;
+        except Exception as e:
+            raise GutenbergTextLoadError(f"Error loading from the URL {url}: {str(e)}")
+        
+
+
+
     
