@@ -1,0 +1,17 @@
+from semantic rag:
+  query = Describe the geology of the Grand Canyon
+  answer = The Grand Canyon region is underlain by a vast pile of gently northward-dipping, stratified rocks more than 10,000 ft thick. 
+           These beds form a broad platform from which rises a flight of immense “stairs” or terraces, each capped by a resistant layer that protects weaker strata beneath.
+           The retreating edges of these caprocks leave sheer escarpments, mesas, and buttes whose cliffs are carved into cathedral-like walls, pyramids, towers, arches, and colonnades. 
+           Weathering and wind deflation steadily strip away the softer layers, so the plateau is gradually dissected and lowered toward a bare-rock or gravel-strewn plain.
+
+  query = Describe the geology of Petrified National forest
+  answer = The Petrified Forest region preserves a record of Late Triassic lowlands that once extended westward from the rising Appalachian mountain system.  
+           At that time the area lay near the equator and was crossed by slow, meandering rivers that deposited great thicknesses of reddish sand and silt.  
+           Periodic floods buried vast forests of conifers, cycad-like plants, and giant horsetails (similar to the forty-foot calamites described for the Carboniferous).  
+           The buried trunks were permeated by silica-rich groundwater, which gradually replaced the organic tissue with quartz, creating the brilliantly colored, perfectly preserved petrified logs visible today.  
+           Above these fossil-bearing layers lie younger Triassic strata that record continued river and flood-plain conditions; the entire sequence rests unconformably on the eroded edges of the older, folded Paleozoic rocks that had been uplifted during the Appalachian deformation.
+
+
+   query = Describe the geology of The Great Chimgan of Tashkent
+   answer = The provided context does not contain any information about the geology of the Great Chimgan of Tashkent.
